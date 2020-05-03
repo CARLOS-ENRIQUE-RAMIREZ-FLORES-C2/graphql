@@ -1,36 +1,32 @@
 "use strict";
 
-const { graphql, buildSchema } = require("graphql");
+const { buildSchema } = require("graphql");
 const express = require("express");
 const gqlMiddleware = require("express-graphql");
+const { readFileSync } = require("fs");
+const { join } = require("path");
+const resolvers = require('./lib/resolve');
 
 const app = express();
-const port = process.env.port || 3005;
+const port = process.env.port || 3004;
 
-///definiendo el esquema
-const schema = buildSchema(`
-type Query {
-    hello: String,
-    saludo: String
-}
-`);
+// definiendo el esquema
+const schema = buildSchema(
+    readFileSync(
+      join(__dirname, 'lib', 'schema.graphql'),
+      'utf-8'
+    )
+  )
 
-//configurar resolver, se ejecutan justo despues de que se terme de hacer el query
-const resolvers = {
-  hello: () => {
-    return "Hola Mundito!";
-  },
-  saludos: () => {
-    return "Hol a todos";
-  },
-};
-
-app.use('/api', gqlMiddleware({
+app.use(
+  "/api",
+  gqlMiddleware({
     schema: schema,
     rootValue: resolvers,
-    graphiql: true
-  }))
-  
-  app.listen(port, () => {
-    console.log(`Server is listening at http://localhost:${port}/api`);
+    graphiql: true,
   })
+);
+
+app.listen(port, () => {
+  console.log(`Server is listening at http://localhost:${port}/api`);
+});
