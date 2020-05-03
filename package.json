@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon -e js,graphql index",
+    "lint": "standard",
+    "lint-fix":"standard --fix"
   },
   "repository": {
     "type": "git",
@@ -17,6 +19,8 @@
   },
   "homepage": "https://github.com/CARLOS-ENRIQUE-RAMIREZ-FLORES-C2/graphql#readme",
   "dependencies": {
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
     "graphql": "^15.0.0",
     "node-npx": "^1.5.0"
   }
